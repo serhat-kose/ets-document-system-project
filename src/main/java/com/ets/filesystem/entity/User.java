@@ -5,6 +5,9 @@ import lombok.*;
 import javax.persistence.*;
 
 @Entity
+@Table(name = "users")
+@AllArgsConstructor
+@RequiredArgsConstructor
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
