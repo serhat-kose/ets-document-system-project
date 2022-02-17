@@ -2,15 +2,20 @@ package com.ets.filesystem;
 
 import com.ets.filesystem.entity.*;
 import com.ets.filesystem.repository.*;
+import com.ets.filesystem.service.*;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.boot.*;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.*;
 
+import javax.annotation.*;
 import java.security.acl.*;
 
 @SpringBootApplication
 public class FileSystemApplication {
+
+	@Resource
+	FileStorageService storageService;
 
 	@Autowired
 	private UserRepository userRepository;
@@ -21,6 +26,9 @@ public class FileSystemApplication {
 	@Bean
 	CommandLineRunner runner(){
 		return args -> {
+
+			storageService.deleteAll();
+			storageService.init();
 			// username: user password: user
 
 			userRepository.save(new User("user",
