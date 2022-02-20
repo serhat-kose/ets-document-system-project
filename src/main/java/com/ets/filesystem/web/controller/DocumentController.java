@@ -19,6 +19,7 @@ import java.util.stream.*;
 
 @RestController
 @RequestMapping("api/v1/document")
+//@SecurityRequirement(name = "fileapi")
 public class DocumentController {
 
     @Autowired
@@ -30,7 +31,7 @@ public class DocumentController {
 
 
     @PostMapping(value = "/upload",consumes = MediaType.MULTIPART_FORM_DATA_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ResponseMessage> uploadFile(@RequestParam("file") MultipartFile file) throws IOException {
+    public ResponseEntity<ResponseMessage> uploadFile(@RequestParam("upload") MultipartFile file) throws IOException {
 
         String message = "";
         try {

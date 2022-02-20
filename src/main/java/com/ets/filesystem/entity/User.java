@@ -1,64 +1,78 @@
 package com.ets.filesystem.entity;
 
 import lombok.*;
+import org.springframework.security.core.*;
+import org.springframework.security.core.userdetails.*;
 
 import javax.persistence.*;
+import java.util.*;
 
 @Entity
-@Table(name = "users")
+@Table(name = "AUTH_USER")
+@Data
 @AllArgsConstructor
-@RequiredArgsConstructor
-public class User {
+@NoArgsConstructor
+public class User implements UserDetails {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(nullable = false, updatable = false)
-    private Long id;
+    private long Id;
 
-    @Column(nullable = false, unique = true)
-    private String username;
+    @Column(name = "USER_NAME",unique = true)
+    private String userName;
 
-    @Column(nullable = false)
+    @Column(name = "PASSWORD")
     private String password;
 
-    @Column(nullable = false)
-    private String role;
+    @Column(name = "FIRST_NAME")
+    private String firstName;
 
-    public User(String username, String password, String role) {
-        super();
-        this.username = username;
-        this.password = password;
-        this.role = role;
+    @Column(name = "LAST_NAME")
+    private String lastName;
+
+    @Column(name = "EMAIL")
+    private String email;
+
+    @Column(name = "ENABLED")
+    private boolean enabled=true;
+
+    @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @JoinTable(name = "AUTH_USER_AUTHORITY",joinColumns = @JoinColumn(referencedColumnName = "id"),inverseJoinColumns = @JoinColumn(referencedColumnName ="id" ))
+    private List<Authority> authorities;
+
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return authorities;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
+    @Override
     public String getPassword() {
-        return password;
+        return this.password;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    @Override
+    public String getUsername() {
+        return this.userName;
     }
 
-    public String getRole() {
-        return role;
+    @Override
+    public boolean isAccountNonExpired() {
+        return this.enabled;
     }
 
-    public void setRole(String role) {
-        this.role = role;
+    @Override
+    public boolean isAccountNonLocked() {
+        return this.enabled;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return this.enabled;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return this.enabled;
     }
 }
