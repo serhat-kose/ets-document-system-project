@@ -3,6 +3,7 @@ package com.ets.filesystem.web.controller;
 import com.ets.filesystem.service.*;
 import com.ets.filesystem.web.model.*;
 import com.ets.filesystem.web.model.File;
+import io.swagger.v3.oas.annotations.security.*;
 import org.apache.tomcat.jni.*;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.core.io.*;
@@ -19,7 +20,8 @@ import java.util.stream.*;
 
 @RestController
 @RequestMapping("api/v1/document")
-//@SecurityRequirement(name = "fileapi")
+@CrossOrigin("/**")
+@SecurityRequirement(name = "filesystemapi")
 public class DocumentController {
 
     @Autowired
@@ -31,7 +33,7 @@ public class DocumentController {
 
 
     @PostMapping(value = "/upload",consumes = MediaType.MULTIPART_FORM_DATA_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ResponseMessage> uploadFile(@RequestParam("upload") MultipartFile file) throws IOException {
+    public ResponseEntity<ResponseMessage> uploadFile(@RequestPart(required = true,name = "file") MultipartFile file) throws IOException {
 
         String message = "";
         try {
@@ -40,7 +42,7 @@ public class DocumentController {
             return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
         } catch (Exception e) {
             message = "Could not upload the file: " + file.getOriginalFilename() + "!";
-            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new ResponseMessage(message));
+            throw new RuntimeException(message);
         }
 
     }

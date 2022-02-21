@@ -12,5 +12,6 @@ public class File {
     private String url;
     private String uploadDir;
     private String docType;
+    private byte[] data;
 
 }

@@ -90,6 +90,7 @@ public class FileStorageServiceImpl implements FileStorageService {
             model.setName(file.getFileName());
             model.setDocType(file.getDocumentType());
             model.setUploadDir(file.getUploadDir());
+            model.setData(file.getData());
 
         String url = MvcUriComponentsBuilder.
                 fromMethodName(DocumentController.class, "getFile", file.getFileName().toString()).build().toString();
