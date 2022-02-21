@@ -15,16 +15,28 @@ public class FileDB {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
-    private String name;
-    private String type;
+
+    @Column(name = "file_name")
+    private String fileName;
+
+    @Column(name = "document_type")
+    private String documentType;
+
+    @Column(name = "upload_dir")
+    private String uploadDir;
+
+
     @Lob
     private byte[] data;
 
     public FileDB() {
     }
-    public FileDB(String name, String type, byte[] data) {
-        this.name = name;
-        this.type = type;
+
+    public FileDB(String fileName, String documentType, String uploadDir, byte[] data) {
+
+        this.fileName = fileName;
+        this.documentType = documentType;
+        this.uploadDir = uploadDir;
         this.data = data;
     }
 }

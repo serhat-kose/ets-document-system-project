@@ -3,43 +3,41 @@ package com.ets.filesystem;
 import com.ets.filesystem.entity.*;
 import com.ets.filesystem.repository.*;
 import com.ets.filesystem.service.*;
+import io.swagger.v3.oas.annotations.*;
+import io.swagger.v3.oas.annotations.enums.*;
+import io.swagger.v3.oas.annotations.info.*;
+import io.swagger.v3.oas.annotations.security.*;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.boot.*;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.*;
+import org.springframework.security.crypto.password.*;
+
 
 import javax.annotation.*;
 import java.security.acl.*;
+import java.util.*;
 
 @SpringBootApplication
+@OpenAPIDefinition(info = @Info(title = "Document System API", version = "2.0", description = "ETSTUR Case Document System API Operations"))
+@SecurityScheme(name = "filesystemapi", scheme = "basic", type = SecuritySchemeType.HTTP, in = SecuritySchemeIn.HEADER)
 public class FileSystemApplication {
 
 	@Resource
 	FileStorageService storageService;
 
-	@Autowired
-	private UserRepository userRepository;
-
 	public static void main(String[] args) {
 		SpringApplication.run(FileSystemApplication.class, args);
 	}
-	@Bean
-	CommandLineRunner runner(){
-		return args -> {
 
-			storageService.deleteAll();
-			storageService.init();
-			// username: user password: user
+	@PostConstruct
+	protected void init(){
+		storageService.deleteAll();
+		storageService.init();
 
-			userRepository.save(new User("user",
-					"$2a$04$1.YhMIgNX/8TkCKGFUONWO1waedKhQ5KrnB30fl0Q01QKqmzLf.Zi",
-					"USER"));
-// username: admin password: admin
-			userRepository.save(new User("admin",
-					"$2a$04$KNLUwOWHVQZVpXyMBNc7JOzbLiBjb9Tk9bP7KNcPI12ICuvzXQQKG",
-					"ADMIN"));
-
-		};
 	}
+
+
+
 
 }
