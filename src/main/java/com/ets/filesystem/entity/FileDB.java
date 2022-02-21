@@ -14,27 +14,26 @@ import javax.persistence.Table;
 public class FileDB {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id;
+    private Long id;
 
-    @Column(name = "file_name")
-    private String fileName;
+    @Column(name = "name")
+    private String filename;
 
-    @Column(name = "document_type")
+    @Column(name = "type")
     private String documentType;
 
     @Column(name = "upload_dir")
     private String uploadDir;
 
-
-    @Lob
+    @Column
     private byte[] data;
 
     public FileDB() {
     }
 
-    public FileDB(String fileName, String documentType, String uploadDir, byte[] data) {
+    public FileDB(String filename, String documentType, String uploadDir, byte[] data) {
 
-        this.fileName = fileName;
+        this.filename = filename;
         this.documentType = documentType;
         this.uploadDir = uploadDir;
         this.data = data;
